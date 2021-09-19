@@ -4,34 +4,38 @@ import Card from './Card'
 import faker from 'faker'
 
 function App() {
-  const fullName = `${faker.name.lastName()}, ${faker.name.firstName()} `
-  const [username, setUsername] = useState(fullName)
+  const fullName = faker.name.findName();
+  const [username, setUsername] = useState(fullName);
+  const [isShowing, setToggleShowCard] = useState(true)
 
   const buttonMarked = (
-    <div className="w3-container w3-bar w3-center">
+    <div className="w3-container w3-center">
       <button className="w3-button w3-red">YES</button>
       <button className="w3-button w3-yellow">NO</button>
     </div>
   )
 
-  const changeNames = () => {
-    setUsername(`${faker.name.lastName()}, ${faker.name.firstName()} `)
-  }
+  const flipName = () => setUsername(fullName);
+
+  const onChangeName = e => setUsername(e.target.value);
+
+  const toggleShowCard = () => setToggleShowCard(!isShowing);
 
   return (
     <div>
-      <button className="w3-button" onClick={() => changeNames}>
-        name
+      <button className="w3-margin-small w3-button w3-black" onClick={toggleShowCard}>
+        show
       </button>
       <div className="w3-row">
-        <Card
+        {isShowing && <Card
           name={username}
           ocup={faker.name.jobTitle()}
           avatar={faker.image.avatar()}
-          changeNames={changeNames}
+          flipName={flipName}
+          onChangeName={onChangeName}
         >
           {buttonMarked}
-        </Card>
+        </Card>}
       </div>
     </div>
   )
